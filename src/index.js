@@ -15,10 +15,14 @@ export default {
 		});
 
 		router.get('/*', (req, res) => {
-			vonage_api.get(req.url).then((response) => {
+			vonage_api.get(`${req.url}&account_id=${vonage_api_key}`).then((response) => {
 				res.json(response.data);
 			}).catch((error) => {
-				res.send(error);
+				res.json({
+					code: error.code,
+					message: error.message,
+					status: error.status,
+				});
 			});
 		});
 
@@ -26,7 +30,11 @@ export default {
 			vonage_api.post(req.url, new URLSearchParams(req.body)).then((response) => {
 				res.json(response.data);
 			}).catch((error) => {
-				res.send(error);
+				res.json({
+					code: error.code,
+					message: error.message,
+					status: error.status,
+				});
 			});
 		});
 	},
